@@ -1,0 +1,700 @@
+/* ==========================================================================
+   Age Calculator & Zodiac Explorer — Gothic Dark Aesthetic
+   ========================================================================== */
+
+/* Design Tokens & CSS Custom Properties */
+:root {
+  /* Dark Charcoal & Obsidian Palette */
+  --bg-body: #0d0d12;
+  --bg-card: #15151e;
+  --bg-card-elevated: #1a1a27;
+  --bg-input: #0e0e16;
+  --bg-pill: #13131c;
+
+  /* Muted Velvet Purple Accents */
+  --accent-purple: #7e22ce;
+  --accent-purple-hover: #9333ea;
+  --accent-purple-muted: rgba(126, 34, 206, 0.25);
+  --accent-border: rgba(168, 85, 247, 0.28);
+  --accent-glow: rgba(126, 34, 206, 0.12);
+
+  /* Typography Colors */
+  --text-primary: #f3f4f6;       /* Parchment / Off-white */
+  --text-secondary: #9ca3af;     /* Light moonlight grey */
+  --text-muted: #6b7280;         /* Subdued ash */
+  --text-accent: #c084fc;        /* Lilac highlight */
+
+  /* Structural Borders & Shadows */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.18);
+  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.65);
+
+  /* Error & Feedback Colors */
+  --error-bg: rgba(239, 68, 68, 0.1);
+  --error-border: rgba(239, 68, 68, 0.35);
+  --error-text: #fca5a5;
+
+  /* Font Stacks (Pure system fonts, no external network fonts) */
+  --font-serif: 'Palatino Linotype', 'Book Antiqua', 'Palatino', 'Georgia', 'Garamond', 'Times New Roman', serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Dimensions */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+/* Base Reset & Core Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #08080c;
+  /* Atmospheric multi-layered gothic mist and cloud-like illumination */
+  background-image: 
+    /* Soft bottom gothic purple mist (more noticeable toward bottom) */
+    radial-gradient(ellipse 110% 65% at 50% 105%, rgba(107, 33, 168, 0.28) 0%, rgba(76, 29, 149, 0.18) 35%, rgba(46, 16, 101, 0.08) 60%, transparent 80%),
+    /* Lower-right atmospheric cloud cluster */
+    radial-gradient(circle 600px at 85% 90%, rgba(126, 34, 206, 0.16) 0%, rgba(88, 28, 135, 0.08) 45%, transparent 70%),
+    /* Lower-left soft misty ambient glow */
+    radial-gradient(circle 550px at 15% 85%, rgba(91, 33, 182, 0.14) 0%, rgba(59, 7, 100, 0.06) 45%, transparent 70%),
+    /* Upper restrained atmospheric mist aura behind header */
+    radial-gradient(ellipse 80% 45% at 50% -5%, rgba(109, 40, 217, 0.14) 0%, rgba(76, 29, 149, 0.06) 45%, transparent 75%),
+    /* Mid-ground subtle cloud illumination */
+    radial-gradient(circle 700px at 50% 50%, rgba(74, 29, 150, 0.05) 0%, transparent 65%),
+    /* Deep obsidian/charcoal base gradient with gentle depth transition */
+    linear-gradient(180deg, #09090d 0%, #0b0b12 40%, #0d0c18 75%, #120e20 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 2.75rem 1.25rem 4rem 1.25rem;
+}
+
+.page-wrapper {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+/* ==========================================================================
+   Header Section
+   ========================================================================== */
+.app-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+.header-emblem {
+  font-size: 1.35rem;
+  color: var(--accent-purple-light, #a855f7);
+  opacity: 0.85;
+  letter-spacing: 0.25rem;
+  user-select: none;
+}
+
+.project-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.85rem, 4vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.course-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* Group Members Badge */
+.team-badge {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background-color: var(--bg-pill);
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  padding: 0.4rem 1.15rem;
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  margin-top: 0.25rem;
+}
+
+.badge-label {
+  color: var(--text-accent);
+  font-weight: 600;
+  font-size: 0.775rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 0.25rem;
+}
+
+.member-name {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.team-badge .divider {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* System Date Reference Pill */
+.system-date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(21, 21, 30, 0.8);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+}
+
+.pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.pill-text strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Cards & Surfaces
+   ========================================================================== */
+.card {
+  background-color: rgba(20, 20, 29, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.03);
+  position: relative;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  border-color: rgba(168, 85, 247, 0.25);
+  box-shadow: 0 18px 45px -8px rgba(0, 0, 0, 0.8), 0 0 18px rgba(126, 34, 206, 0.08);
+}
+
+.card-header {
+  margin-bottom: 1.75rem;
+  text-align: center;
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Form Inputs & Grid
+   ========================================================================== */
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.input-group input {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1.15rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-align: center;
+  padding: 0.75rem 0.5rem;
+  outline: none;
+  transition: all 0.2s ease;
+  min-height: 48px;
+}
+
+.input-group input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.5;
+  font-weight: 400;
+}
+
+.input-group input:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.input-group input:focus {
+  border-color: var(--accent-purple-light, #a855f7);
+  background-color: #12121c;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* Hide number input spinners for clean look */
+.input-group input[type="number"]::-webkit-outer-spin-button,
+.input-group input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.input-group input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
+   Buttons & Actions
+   ========================================================================== */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.btn {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.75rem 1.65rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  min-height: 46px;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary {
+  background-color: var(--accent-purple);
+  color: #ffffff;
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 4px 14px rgba(126, 34, 206, 0.35);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-purple-hover);
+  box-shadow: 0 6px 18px rgba(147, 51, 234, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border-subtle);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+.btn-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   Error & Validation Banner
+   ========================================================================== */
+.error-banner {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.15rem;
+  color: var(--error-text);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.error-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.error-text {
+  font-weight: 500;
+}
+
+/* Utility Hidden Class */
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Results Display Section
+   ========================================================================== */
+.results-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  animation: fadeIn 0.35s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-title-wrap {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.title-ornament {
+  font-size: 0.85rem;
+  color: var(--accent-purple-light, #a855f7);
+  letter-spacing: 0.3rem;
+  opacity: 0.8;
+}
+
+.results-heading {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+}
+
+/* Age Metric Cards Grid */
+.age-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.metric-card {
+  background-color: rgba(21, 21, 31, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.65rem 1rem;
+  text-align: center;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+  opacity: 0.6;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-border);
+  box-shadow: 0 14px 35px -5px rgba(0, 0, 0, 0.8), 0 0 16px rgba(126, 34, 206, 0.12);
+}
+
+.metric-number {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-primary);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.metric-label {
+  font-size: 0.825rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-accent);
+}
+
+/* Birthday Celebration Greeting */
+.birthday-greeting {
+  background: rgba(126, 34, 206, 0.15);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.25rem;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: #e9d5ff;
+  letter-spacing: 0.02em;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Secondary Details Grid */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.detail-card {
+  padding: 1.6rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.detail-header {
+  margin-bottom: 1.15rem;
+}
+
+.detail-tag {
+  font-size: 0.725rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.detail-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 0.15rem;
+}
+
+/* Zodiac Card Content */
+.zodiac-content {
+  display: flex;
+  align-items: center;
+  gap: 1.35rem;
+}
+
+.zodiac-symbol {
+  font-size: 3.25rem;
+  line-height: 1;
+  color: var(--text-accent);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.zodiac-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.zodiac-name {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.zodiac-range {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.zodiac-element-pill {
+  font-size: 0.775rem;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.2rem;
+}
+
+.zodiac-element-pill strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Next Birthday Card Content */
+.birthday-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.next-bday-date {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.next-bday-day {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.countdown-badge {
+  display: inline-block;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  width: fit-content;
+}
+
+.countdown-badge strong {
+  color: var(--text-accent);
+  font-size: 1rem;
+}
+
+.next-bday-note {
+  font-size: 0.775rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 768px) {
+  body {
+    padding: 1.75rem 1rem;
+  }
+
+  .page-wrapper {
+    gap: 1.75rem;
+  }
+
+  .card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .metric-number {
+    font-size: 2.35rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-grid {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .age-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .metric-card {
+    padding: 1.15rem 0.75rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .team-badge {
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.85rem;
+  }
+}

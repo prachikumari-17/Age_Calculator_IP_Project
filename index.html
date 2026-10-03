@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator & Zodiac Explorer</title>
+  <meta name="description"
+    content="Calculate your exact chronological age in years, months, and days and discover your zodiac sign. An Imperative Programming project.">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="page-wrapper">
+    <!-- Academic Header -->
+    <header class="app-header">
+      <div class="header-emblem">✦</div>
+      <h1 class="project-title">Age Calculator &amp; Zodiac Explorer</h1>
+
+      <div class="team-badge" aria-label="Project Group Members">
+        <span class="badge-label">Group Members:</span>
+        <span class="member-name">Prachi Kumari</span>
+        <span class="divider">•</span>
+        <span class="member-name">Nidhi Rathi</span>
+        <span class="divider">•</span>
+        <span class="member-name">Sanskriti Prasad</span>
+        <span class="divider">•</span>
+        <span class="member-name">Sneha Sahu</span>
+      </div>
+
+      <!-- Current System Reference Date -->
+      <div class="system-date-pill" id="systemDatePill">
+        <span class="pill-dot"></span>
+        <span class="pill-text">Reference System Date: <strong id="currentDateDisplay">Loading...</strong></span>
+      </div>
+    </header>
+
+    <!-- Main Application Card -->
+    <main class="calculator-container">
+      <section class="card form-card">
+        <div class="card-header">
+          <h2 class="card-title">Date of Birth</h2>
+          <p class="card-desc">Enter your birth day, month, and year to calculate your exact chronological age.</p>
+        </div>
+
+        <form id="ageCalculatorForm" novalidate>
+          <div class="input-grid">
+            <!-- Day Input -->
+            <div class="input-group">
+              <label for="inputDay">Day (DD)</label>
+              <input type="number" id="inputDay" name="day" placeholder="DD" min="1" max="31" required
+                autocomplete="off">
+              <span class="input-hint">1 &ndash; 31</span>
+            </div>
+
+            <!-- Month Input -->
+            <div class="input-group">
+              <label for="inputMonth">Month (MM)</label>
+              <input type="number" id="inputMonth" name="month" placeholder="MM" min="1" max="12" required
+                autocomplete="off">
+              <span class="input-hint">1 &ndash; 12</span>
+            </div>
+
+            <!-- Year Input -->
+            <div class="input-group">
+              <label for="inputYear">Year (YYYY)</label>
+              <input type="number" id="inputYear" name="year" placeholder="YYYY" min="1900" max="2099" required
+                autocomplete="off">
+              <span class="input-hint">e.g. 2004</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="form-actions">
+            <button type="submit" id="calculateBtn" class="btn btn-primary">
+              <span class="btn-icon">✧</span>
+              <span>Calculate Age</span>
+            </button>
+            <button type="button" id="resetBtn" class="btn btn-secondary">
+              <span>Clear / Reset</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Error & Validation Banner -->
+        <div id="errorBanner" class="error-banner hidden" role="alert" aria-live="polite">
+          <span class="error-icon">⚠</span>
+          <span id="errorMessage" class="error-text"></span>
+        </div>
+      </section>
+
+      <!-- Results Display Section -->
+      <section id="resultsSection" class="results-section hidden" aria-live="polite">
+        <!-- Age Metrics Banner -->
+        <div class="section-title-wrap">
+          <span class="title-ornament">&mdash; ✧ &mdash;</span>
+          <h2 class="results-heading">Calculated Chronological Age</h2>
+        </div>
+
+        <div class="age-cards-grid">
+          <!-- Years Card -->
+          <div class="metric-card">
+            <span class="metric-number" id="resultYears">0</span>
+            <span class="metric-label">Years</span>
+          </div>
+
+          <!-- Months Card -->
+          <div class="metric-card">
+            <span class="metric-number" id="resultMonths">0</span>
+            <span class="metric-label">Months</span>
+          </div>
+
+          <!-- Days Card -->
+          <div class="metric-card">
+            <span class="metric-number" id="resultDays">0</span>
+            <span class="metric-label">Days</span>
+          </div>
+        </div>
+
+        <!-- Birthday Message (if today is birthday) -->
+        <div id="birthdayGreeting" class="birthday-greeting hidden">
+          <span>🕯 Happy Birthday! Celebrating your special day today! 🕯</span>
+        </div>
+
+        <!-- Secondary Details Grid: Zodiac & Next Birthday -->
+        <div class="details-grid">
+          <!-- Zodiac Explorer Card -->
+          <div class="card detail-card zodiac-card">
+            <div class="detail-header">
+              <span class="detail-tag">Astrological Profile</span>
+              <h3 class="detail-title">Zodiac Sign</h3>
+            </div>
+            <div class="zodiac-content">
+              <div class="zodiac-symbol" id="zodiacSymbol">&#9800;</div>
+              <div class="zodiac-info">
+                <h4 class="zodiac-name" id="zodiacName">&mdash;</h4>
+                <p class="zodiac-range" id="zodiacRange">&mdash;</p>
+                <div class="zodiac-element-pill">
+                  <span>Element:</span>
+                  <strong id="zodiacElement">&mdash;</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Next Birthday Countdown Card -->
+          <div class="card detail-card birthday-card">
+            <div class="detail-header">
+              <span class="detail-tag">Upcoming Milestone</span>
+              <h3 class="detail-title">Next Birthday</h3>
+            </div>
+            <div class="birthday-content">
+              <div class="next-bday-date" id="nextBirthdayDate">&mdash;</div>
+              <div class="next-bday-day" id="nextBirthdayDay">&mdash;</div>
+              <div class="countdown-badge" id="nextBirthdayCountdown">
+                <strong id="countdownDays">&mdash;</strong> days remaining
+              </div>
+              <p class="next-bday-note hidden" id="nextBirthdayNote"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
